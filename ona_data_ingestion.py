@@ -1,10 +1,15 @@
-
+import os
 import requests 
+from dotenv import load_dotenv
 
+load_dotenv(dotenv_path=f"compose1.env")
+
+URL = os.getenv("URL")
+USERNAME = os.getenv("USERNAME")
+PASSWORD = os.getenv("PASSWORD")
 def get_data_from_ona():
-    url = input('Enter the url:')
-    auth = (str(input('Enter you username:')), str(input('Enter your password:')))
-    response =requests.get(url=url,auth=auth)
+    auth = (USERNAME, PASSWORD)
+    response =requests.get(url=URL,auth=auth)
     
     if response.status_code==200:
         ona_data= response.json()
