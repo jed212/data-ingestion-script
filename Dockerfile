@@ -6,5 +6,6 @@ ADD compose1.env .
 
 RUN pip install requests
 RUN pip install python-dotenv
+RUN pip install csv
 
 CMD [ "python", "./ona_data_ingestion.py"]
