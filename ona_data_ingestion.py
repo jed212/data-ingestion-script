@@ -1,17 +1,21 @@
+
 import os
+import psycopg2
 import requests
-import csv
 
 from dotenv import load_dotenv
+
+connection=psycopg2.connect(user="favour",password="jedidiahfavour",port="5432",database="new_db")
+cursor=connection.cursor()
 
 load_dotenv(dotenv_path=f"compose1.env")
 
 URL = os.getenv("URL")
-USERNAME = os.getenv("USERNAME")
+ONA_USERNAME = os.getenv("ONA_USERNAME")
 PASSWORD = os.getenv("PASSWORD")
 
 def get_data_from_ona():
-    response=requests.get(url=URL,auth=(USERNAME, PASSWORD))
+    response=requests.get(url=URL,auth=(ONA_USERNAME, PASSWORD))
     
     if response.status_code==200:
         ona_data= response.json()
