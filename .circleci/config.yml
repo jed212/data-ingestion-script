@@ -1,8 +1,25 @@
-version: 2
+version: 2.1
+orbs:
+  docker: circleci/docker@1.4.0
+workflows:
+  my-workflow:
+    jobs:
+      - build:
+          context:
+            - build-env-vars
+            - docker-hub-creds
 jobs:
+  machine-job:
+    machine: true
+    steps:
+      - docker/check:
+          docker-username: DOCKERHUB_LOGIN
+          docker-password: DOCKERHUB_PASSWORD
+      - docker/pull:
+          images: 'circleci/python3:latest'            
   build:
     docker:
-    - image: cimg/python:3.10.6
+    - image: acme-private/private-image:321
       auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD 
