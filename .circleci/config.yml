@@ -10,18 +10,18 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
-           - v1-dependancies--{{ checksum "/.circleci/requirements.txt"}}
+           - v1-dependancies--{{ checksum "data-ingestion-script/.circleci/requirements.txt"}}
            - v1-dependencies-
       - save_cache:
           paths:
           - ./venv
-          key: v1--{{ checksum "/.circleci/requirements.txt" }}
+          key: v1--{{ checksum "data-ingestion-script/.circleci/requirements.txt" }}
       - run:
           name: Install Python deps in a venv
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install -r .circleci/requirements.txt
+            pip install -r data-ingestion-script/.circleci/requirements.txt
       - run:
           command: |
             . venv/bin/activate
