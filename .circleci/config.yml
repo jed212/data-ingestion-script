@@ -15,7 +15,7 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install -r data-ingestion-script/requirements.txt
+            pip install -r .circleci/requirements.txt
       # - save_cache:
       #     key: deps1-{{ .circleci }}-{{ checksum "data-ingestion-script/requirements.txt" }}
       #     paths:
