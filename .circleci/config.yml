@@ -1,17 +1,43 @@
 version: 2.1
 
-orbs:
-  python: circleci/python@2.1.1
-
 jobs:
-  build-and-test:
-   executor: python/default
-    steps:
-    -checkout
-    -python/install-deps
-    -python/test
+  build:
+    docker: 
+      - image: cimg/python:3.10.6
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD
+      environment:
+          URL: "https://stage-api.ona.io/api/v1/data/3625.json"
+          ONA_USERNAME: "jedidiah"
+          ONA_PASSWORD: "jedidiahfavour20001"
+          USER: "ona"
+          PASSWORD: "12345"
+          HOST: "localhost"
+          PORT: "5432"
+          DATABASE: "new_db"
 
-workflows:
-  main:
+    steps:
+      - checkout
+      - run:
+          name:
+          command:
+      - run:
+          name: "Branch name"
+          command: echo $circleci
+      - run:
+          name: Install Python deps in a venv
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements/dev.txt
+      - run:
+          command: |
+            . venv/bin/activate
+            python manage.py test
+
+workflows: 
+  build:
     jobs:
-    - build-and-test
+      - build:
+          context: Tests
