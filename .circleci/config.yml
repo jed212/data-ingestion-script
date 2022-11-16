@@ -10,12 +10,12 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
-           - v1-dependancies-{{ .circleci }}-{{ checksum "/.circleci/requirements.txt"}}
+           - v1-dependancies--{{ checksum "/.circleci/requirements.txt"}}
            - v1-dependencies-
       - save_cache:
           paths:
           - ./venv
-          key: v1-{{ .circleci }}-{{ checksum "/.circleci/requirements.txt" }
+          key: v1--{{ checksum "/.circleci/requirements.txt" }}
       - run:
           name: Install Python deps in a venv
           command: |
