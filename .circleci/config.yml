@@ -8,18 +8,18 @@ jobs:
           password: $DOCKERHUB_PASSWORD 
     steps:
       - checkout
-      - restore_cache:
-          key: deps1-{{ .circleci }}-{{ checksum "data-ingestion-script/requirements.txt"}}
+      # - restore_cache:
+      #     key: deps1-{{ .circleci }}-{{ checksum "data-ingestion-script/requirements.txt"}}
       - run:
           name: Install Python deps in a venv
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install -r requirements.txt
-      - save_cache:
-          key: deps1-{{ .circleci }}-{{ checksum "data-ingestion-script/requirements.txt" }}
-          paths:
-            - "venv"
+            pip install -r data-ingestion-script/requirements.txt
+      # - save_cache:
+      #     key: deps1-{{ .circleci }}-{{ checksum "data-ingestion-script/requirements.txt" }}
+      #     paths:
+      #       - "venv"
       - run:
           command: |
             . venv/bin/activate
