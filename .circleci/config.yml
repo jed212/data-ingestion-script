@@ -9,17 +9,18 @@ jobs:
       - restore_cache:
           keys: 
            - v1-dependancies-{{ checksum "requirements.txt"}}
-           - v1-dependencies-
+           - v1-dependancies-
       - run:
           name: Install Python deps in a venv
           command: |
             python3 -m venv venv
             . venv/bin/activate
+            python -m pip install --upgrade pip
             pip install -r requirements.txt
       - save_cache:
           paths:
           - ./venv
-          key: v1-{{ checksum "requirements.txt" }}
+          key: v1-dependancies-{{ checksum "requirements.txt" }}
       - run:
           name: Test
           command: |
