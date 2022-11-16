@@ -1,9 +1,12 @@
 version: 2.1
 
+orbs:
+  pytest: /pytest:7.2.0
+
 jobs:
   build:
     docker: 
-      - image: cimg/python:3.10.6
+      - image: python:3.10.6
         auth:
           username: 
           password:
