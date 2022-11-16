@@ -2,20 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cimg/python:3.10.6
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD
-        environment:
-        TEST_DATABASE_URL:  "postgres://ona:12345@localhost:5432/new_db";
-      - image: cimg/postgres: 14.5
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD
-        environment:
-          POSTGRES_USER: ona
-          POSTGRES_DB: new_db
-          POSTGRES_PASSWORD: "12345"
+    - image: cimg/python:3.10.6
     steps:
       - checkout
       - restore_cache:
@@ -34,8 +21,3 @@ jobs:
           command: |
             . venv/bin/activate
             python script_to_db.py test
-      - store_artifacts:
-          path: test-reports/
-          destination: tr1
-      - store_test_results:
-          path: test-reports/
