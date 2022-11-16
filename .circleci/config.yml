@@ -5,8 +5,8 @@ jobs:
     docker: 
       - image: cimg/python:3.10.6
         auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD
+          username: 
+          password:
       environment:
           URL: "https://stage-api.ona.io/api/v1/data/3625.json"
           ONA_USERNAME: "jedidiah"
@@ -27,12 +27,12 @@ jobs:
           command: echo $circleci
       - run:
           name: Install Python deps in a venv
-          command: |
+          command:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements/dev.txt
       - run:
-          command: |
+          command:
             . venv/bin/activate
             python manage.py test
 
