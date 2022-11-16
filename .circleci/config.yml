@@ -7,7 +7,7 @@ jobs:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD
         environment:
-          TEST_DATABASE_URL:  "postgres://ona:12345@localhost:5432/new_db";
+        TEST_DATABASE_URL:  "postgres://ona:12345@localhost:5432/new_db";
       - image: cimg/postgres: 14.5
         auth:
           username: mydockerhub-user
