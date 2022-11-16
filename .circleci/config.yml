@@ -1,45 +1,27 @@
-version: 2.1
-orbs:
-  docker: circleci/docker@1.4.0
-workflows:
-  my-workflow:
-    jobs:
-      - build:
-          context:
-            - build-env-vars
-            - docker-hub-creds
-jobs:
-  machine-job:
-    machine: true
-    steps:
-      - docker/check:
-          docker-username: DOCKERHUB_LOGIN
-          docker-password: DOCKERHUB_PASSWORD
-      - docker/pull:
-          images: 'circleci/python3:latest'            
+version: 2
+jobs:            
   build:
     docker:
-    - image: acme-private/private-image:321
-      auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD 
+      - image: cimg/python:3.10.8
+    working_directory: ~/data-ingestion-script
     steps:
       - checkout
       - restore_cache:
           keys: 
-           - v1-dependancies--{{ checksum "requirements.txt"}}
+           - v1-dependancies-{{ checksum "requirements.txt"}}
            - v1-dependencies-
-      - save_cache:
-          paths:
-          - ./venv
-          key: v1--{{ checksum "requirements.txt" }}
       - run:
           name: Install Python deps in a venv
           command: |
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
+      - save_cache:
+          paths:
+          - ./venv
+          key: v1-{{ checksum "requirements.txt" }}
       - run:
+          name: Test
           command: |
             . venv/bin/activate
-            python script_to_db.py test
+            pytest
