@@ -3,6 +3,9 @@ jobs:
   build:
     docker:
     - image: cimg/python:3.10.6
+      auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD 
     steps:
       - checkout
       - restore_cache:
