@@ -1,46 +1,41 @@
-version: 2.1
-
-orbs:
-  pytest: /pytest:7.2.0
-
+version: 2
 jobs:
   build:
-    docker: 
-      - image: python:3.10.6
+    docker:
+      - image: cimg/python:3.10.6
         auth:
-          username: 
-          password:
-      environment:
-          URL: "https://stage-api.ona.io/api/v1/data/3625.json"
-          ONA_USERNAME: "jedidiah"
-          ONA_PASSWORD: "jedidiahfavour20001"
-          USER: "ona"
-          PASSWORD: "12345"
-          HOST: "localhost"
-          PORT: "5432"
-          DATABASE: "new_db"
-
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          TEST_DATABASE_URL:  "postgres://ona:12345@localhost:5432/new_db";
+      - image: cimg/postgres: 14.5
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_USER: ona
+          POSTGRES_DB: new_db
+          POSTGRES_PASSWORD: "12345"
     steps:
       - checkout
-      - run:
-          name:
-          command:
-      - run:
-          name: "Branch name"
-          command: echo $circleci
+      - restore_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
       - run:
           name: Install Python deps in a venv
-          command:
+          command: |
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements/dev.txt
+      - save_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+          paths:
+            - "venv"
       - run:
-          command:
+          command: |
             . venv/bin/activate
-            python manage.py test
-
-workflows: 
-  build:
-    jobs:
-      - build:
-          context: Tests
+            python script_to_db.py test
+      - store_artifacts:
+          path: test-reports/
+          destination: tr1
+      - store_test_results:
+          path: test-reports/
