@@ -26,5 +26,4 @@ jobs:
           command: |
             . venv/bin/activate
             pytest
-            pylint
-            
+            pylint test_script_to_db
