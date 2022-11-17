@@ -5,6 +5,7 @@ from script_to_db import evaluate_json_values
 
 @patch('script_to_db.fetch_data')
 def test_evaluate_json_values_from_fetch_data(mock_get):
+    '''Testing evaluate_json_values() with fetch_data()'''
     mock_get.return_value = [
         {
             "_id": 2334,
