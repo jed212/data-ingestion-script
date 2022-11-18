@@ -1,0 +1,29 @@
+version: 2
+jobs:            
+  build:
+    docker:
+      - image: cimg/python:3.10.8
+    working_directory: ~/data-ingestion-script
+    steps:
+      - checkout
+      - restore_cache:
+          keys: 
+           - v1-dependancies-{{ checksum "requirements.txt"}}
+           - v1-dependancies-
+      - run:
+          name: Install Python deps in a venv
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+      - save_cache:
+          paths:
+          - ./venv
+          key: v1-dependancies-{{ checksum "requirements.txt" }}
+      - run:
+          name: Test
+          command: |
+            . venv/bin/activate
+            pytest
+            pylint test_script_to_db
